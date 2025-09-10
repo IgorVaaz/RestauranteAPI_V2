@@ -93,6 +93,28 @@ app.get('/usuarios/:nome', (req, res) => {
     }
 });
 
+//NOVA ROTA PRA EXCLUIR USUARIO POR NOME
+app.delete('/excluirPorNome/:nome', (req, res) => {
+    
+    const nomeParaExcluir = req.params.nome;
+
+    console.log(`Recebi o nome para excluir: ${nomeParaExcluir}`);
+
+    const indiceDoUsuario = bancoDeDados.findIndex(
+        (usuario) => usuario.nome.toLowerCase() === nomeParaExcluir.toLowerCase()
+    );
+
+    if(indiceDoUsuario >= 0 ) {
+        bancoDeDados.splice(indiceDoUsuario, 1);
+        console.log('Usuario removido. Banco atual: ', bancoDeDados);
+        res.send(`Usuario ${nomeParaExcluir} removido com sucesso!`);
+    } else {
+        console.log(`Usuario "${nomeParaExcluir}" não encontrado!`);
+        res.send(`Desculpe, o usuário "${nomeParaExcluir}" não foi encontrado!`);
+    }
+
+    });
+
 // Passo 6: Ligar o fogão! Ou seja, iniciar nosso servidor.
 app.listen(PORT, () => {
     console.log(`🚀 Servidor rodando e ouvindo na porta ${PORT}. Pode mandar os pedidos!`);
